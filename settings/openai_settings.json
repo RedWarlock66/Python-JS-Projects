@@ -1,0 +1,4 @@
+{"key": "",
+  "model": "gpt-3.5-turbo",
+  "max_tokens": 4096,
+  "conversation_cut_percentage": 30}

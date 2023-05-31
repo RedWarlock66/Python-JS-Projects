@@ -1,0 +1,134 @@
+h1 {
+    color: yellow;
+    text-align: center;
+}
+h2 {
+    color: blue;
+    text-align: center;
+}
+.center-button {
+  margin: 0 auto;
+  display: block;
+  color: #008000;
+}
+.div_block {
+     color: black;
+     text-align: left;
+     font-size: 1rem;
+}
+.center {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.big_link {
+    position: relative;
+    left: 47.5%;
+    font-size: 2rem;
+    color: red;
+}
+.div1 {
+     color: green;
+     font-size: 1.5rem;
+     text-align: center;
+}
+.option {
+    background-color: gray;
+}
+.personal_page {
+    float: right;
+    color: blue;
+}
+.unlogin {
+    float: right;
+    color: red;
+}
+.blue_text {
+    color: blue;
+}
+.choice_span{
+    background-color: yellow;
+}
+.option-div-container {
+    height: 30px;
+    position: relative;
+    border: 2px;
+    margin: 5px;
+}
+.option-progress-line {
+    width: 3%;
+    height: 100%;
+    position: absolute;
+    background-color: #90ee90;
+}
+.option-text-content {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    vertical-align: middle;
+    font-size: 1.5rem;
+    z-index: 1;
+    color: red;
+}
+.mars-loader {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(255,255,255,0.8);
+  background-image: url('../img/Mars animated.gif');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.login-form {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+}
+.main-body-style {
+    background-image: url('../img/Satellite-wallpaper.jpg');
+}
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 85vh;
+}
+.chat-messages {
+  flex-grow: 1;
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 8px;
+  overflow-y: scroll;
+  width:60%;
+}
+.chat-message {
+    margin-bottom: 1px;
+    word-wrap: break-word;
+}
+.chat-input {
+    padding: 5px;
+    width: 60%;
+    display: flex;
+    height: 10%;
+}
+.message-input {
+    width:100%;
+    border: none;
+    border-radius: 4px;
+}
+.voice-status-container {
+    background-color: transparent;
+    width: 60%;
+    border: none;
+    display: flex;
+}
+.voice-status-data {
+    background-color: white;
+    padding: 1px;
+    color: blue;
+}
