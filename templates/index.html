@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+    <link rel="stylesheet" href="/static/css/style.css">
     <script src="/static/lib/basics.js"></script>
     <script src="/static/lib/voiceTalking.js"></script>
     <title>Enhanced GPT conversation</title>
@@ -10,6 +10,10 @@
 </head>
 <body style="background-image:url('/static/img/Satellite-wallpaper.jpg')">
 <h1>Enhanced GPT conversation</h1>
+<div id="waiting-status-container" class="waiting-status-container" style="display:none">
+    <img src="/static/img/Mars animated.gif" >
+    <div style="color:blue;background-color:white">Waiting for answer...</div>
+</div>
 <div class="chat-container">
     <div class="chat-messages" id="chat-messages">
     </div>
@@ -37,6 +41,7 @@
     const chatMessages = document.getElementById('chat-messages');
     const messageInput = document.getElementById('message-input');
     const messageBackgroundColors = {user:'lightgoldenrodyellow', assistant:'beige'}
+    const waitingStatusContainer = document.getElementById('waiting-status-container');
     var showOpenAIKeySettings = false;
     readOpenAIKey();
     setKeyboardMessageInput();
@@ -118,6 +123,7 @@
     }
 
     function sendMessageToServer(content_data) {
+        waitingStatusContainer.style.display = 'flex';
         let url = '/gpt/send_message';
         let settings = {method:'POST',
                         headers:{'Content-Type':'application/json'},
@@ -125,6 +131,7 @@
                         }
         fetch(url, settings)
             .then(response => {
+                waitingStatusContainer.style.display = 'none';
                 if (!response.ok) {
                     if (response.status === 400) {
                         return response.json().then(data => {
