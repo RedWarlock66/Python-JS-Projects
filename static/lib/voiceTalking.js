@@ -241,6 +241,7 @@ voiceTalking._initializeRecognizing = function () {
         } else {
             console.log('adding recognition result');
             voiceTalking.inputElement.value += result + ' ';
+            voiceTalking.inputElement.scrollTop = voiceTalking.inputElement.scrollHeight;
             voiceTalking.recognizing = true;
         }
     });
