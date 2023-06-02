@@ -115,6 +115,7 @@ voiceTalking.setLang = function (lang, switchSynthesis = false) {
 
 voiceTalking._addSettingsButton = function (parameters) {
     let button = document.createElement('button');
+    button.id = 'settings-button';
     button.style.backgroundColor = 'transparent';
     button.style.border = 'none';
     button.style.cursor = 'pointer';
@@ -144,6 +145,16 @@ voiceTalking._addSettingsButton = function (parameters) {
     voiceTalking._addRecognitionSettings(parameters);
     document.body.appendChild(button);
     document.body.appendChild(voiceTalking._settingsWindow);
+    voiceTalking._addSettingsCloseEvent();
+}
+
+voiceTalking._addSettingsCloseEvent = function () {
+    document.addEventListener('click', function(event) {
+        if (event.target !== voiceTalking._settingsWindow && !voiceTalking._settingsWindow.contains(event.target)
+                && event.target !== document.getElementById('settings-button')) {
+            voiceTalking._settingsWindow.style.display = 'none';
+        }
+    });
 }
 
 voiceTalking._addRecognitionSettings = function(parameters) {
