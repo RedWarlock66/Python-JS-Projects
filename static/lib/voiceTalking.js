@@ -54,8 +54,17 @@ voiceTalking._addSwithces = function() {
     });
     voiceTalking.statusTextElement.style.cursor = 'pointer';
     voiceTalking.statusTextElement.addEventListener('click', function() {
-        voiceTalking.inputElement.value = '';
-        if (voiceTalking.recognizing) voiceTalking.stopRecognizing();
+        if (voiceTalking._recognitionCheckbox.checked) {
+            if (voiceTalking.recognizing) {
+                voiceTalking.inputElement.value = '';
+                voiceTalking.stopRecognizing();
+            } else if (voiceTalking.listening) {
+                voiceTalking.listening = false;
+                voiceTalking._startRecognizing();
+            } else {
+                voiceTalking.startListening();
+            }
+        }
     });
 }
 
