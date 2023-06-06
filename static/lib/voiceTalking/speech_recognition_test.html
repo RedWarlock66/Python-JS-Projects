@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Speech recognition test</title>
+</head>
+<body>
+<h1>Testing speech recognition functions</h1>
+<h2 id="not-supported-text" style="display:none">Your browser doesn't support speech recognition or webkit speech recognition</h2>
+<div id="recognition-functions" style="display:none">
+    <textarea id="text-input" placeholder="recognized english text should appear here" style="width:50%"></textarea>
+    <div style="display:flex">
+        <button onclick="startRecognition()" style="margin:5px;">Start</button>
+        <button onclick="stopRecognition()" style="margin:5px;">Stop</button>
+    </div>
+    <div id="recognition-status">Recognition off</div>
+</div>
+<script>
+    var recognizer = false;
+    var restartRecognition = false;
+    const recognitionStatus = document.getElementById('recognition-status');
+    const textInput = document.getElementById('text-input');
+
+    if (!(window.SpeechRecognition || window.webkitSpeechRecognition)) {
+        notSupportedText = document.getElementById('not-supported-text');
+        notSupportedText.style.display = 'block';
+    } else {
+        initializeRecognizer();
+        let recognitionFunctions = document.getElementById('recognition-functions');
+        recognitionFunctions.style.display = 'block';
+    }
+
+    function initializeRecognizer() {
+        recognizer = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognizer.lang = 'en-US';
+        recognizer.addEventListener('result', (event) => {
+            let result = event.results[event.results.length - 1][0].transcript.toLowerCase().trim();
+            textInput.value += result + ' ';
+            restartRecognition = true;
+        });
+
+        recognizer.addEventListener('end', (event) => {
+            if (restartRecognition) {
+                console.log('restart recognition');
+                recognizer.start();
+            } else {
+                console.log('recognition stopped');
+                recognitionStatus.textContent = 'Recognition off';
+                textInput.value = '';
+            }
+        });
+    }
+
+    function startRecognition() {
+        if (recognizer) {
+           console.log('start recognition');
+           recognizer.start();
+           recognitionStatus.textContent = 'Recognition on';
+        }
+    }
+
+    function stopRecognition() {
+        if (recognizer) {
+           console.log('stop recognition');
+           restartRecognition = false;
+           recognizer.stop();
+        }
+    }
+
+</script>
+</body>
+</html>

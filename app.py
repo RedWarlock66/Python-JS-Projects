@@ -1,4 +1,4 @@
-from flask import Flask, request, make_response, render_template, jsonify
+from flask import Flask, request, make_response, render_template, jsonify, send_file
 from GPT import ConversationAPI
 from threading import Thread
 from pathlib import Path
@@ -17,7 +17,6 @@ def ping():
     return 'Enhanced GPT conversation is working'
 
 @app.route('/gpt', methods=['GET'])
-@app.route('/gpt/index', methods=['GET'])
 def index():
     return render_template('index.html')
 
@@ -44,6 +43,10 @@ def set_openai_key():
     #add error checking later
     gpt_api.openai_key = request.get_data(as_text=True)
     return make_response('Ok', 200)
+
+@app.route('/gpt/conversation_test', methods=['GET'])
+def open_conversation_test():
+    return send_file('static/lib/voiceTalking/speech_recognition_test.html')
 
 def _read_settings() -> dict:
     with open(app_settings_file, 'r') as file:
