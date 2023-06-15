@@ -233,7 +233,7 @@ voiceTalking._initializeListening = function () {
             voiceTalking.listening = true;
             voiceTalking.synthesiseSpeech(voiceTalking.confirmPhrases[voiceTalking.lang],
                 function () {voiceTalking.setLang(switchPhrases[result], true)});
-        } else if (result === voiceTalking.startPhrases[voiceTalking.lang]) {
+        } else if (voiceTalking._phraseMatches(result, voiceTalking.startPhrases[voiceTalking.lang])) {
             voiceTalking.listening = false;
             voiceTalking.synthesiseSpeech(voiceTalking.responsePhrases[voiceTalking.lang],
                 voiceTalking._startRecognizing);
@@ -258,14 +258,14 @@ voiceTalking._initializeRecognizing = function () {
     voiceTalking.recognizer.addEventListener('result', (_event) => {
         let result = _event.results[_event.results.length - 1][0].transcript.toLowerCase().trim();
         console.log('voice recognizing result: ' + result);
-        if (result === voiceTalking.executePhrases[voiceTalking.lang]) {
+        if (voiceTalking._phraseMatches(result, voiceTalking.executePhrases[voiceTalking.lang])) {
             console.log('executing method');
             voiceTalking.listening = true;
             voiceTalking.recognizing = false;
             //здесь бы надо блокировать распознавание речи, пока идет её синтез
             voiceTalking.synthesiseSpeech(voiceTalking.confirmPhrases[voiceTalking.lang],
                 voiceTalking.execMethod);
-        } else if (result === voiceTalking.breakPhrases[voiceTalking.lang]) {
+        } else if (voiceTalking._phraseMatches(result, voiceTalking.breakPhrases[voiceTalking.lang])) {
             voiceTalking.inputElement.value = '';
             voiceTalking.listening = true;
             voiceTalking.recognizing = false;
@@ -290,6 +290,14 @@ voiceTalking._initializeRecognizing = function () {
     });
 }
 
+voiceTalking._phraseMatches = function(inputPhrase, PhrasesToCheck) {
+    if (typeof PhrasesToCheck === 'string') {
+        return inputPhrase === PhrasesToCheck;
+    } else { //array
+        return PhrasesToCheck.includes(inputPhrase);
+    }
+}
+
 voiceTalking._setPhrases = function (propertyName, phrases) {
     console.log('establishing speech recognition ' + propertyName);
     voiceTalking[propertyName] = {};
@@ -302,9 +310,20 @@ voiceTalking._setPhrases = function (propertyName, phrases) {
                 console.log(phrase.toLowerCase().trim() + ': ' + phrases[lang][phrase]);
             }
         } else {
-            voiceTalking[propertyName][lang] = phrases[lang].toLowerCase().trim();
-            console.log(phrases[lang].toLowerCase().trim());
+            voiceTalking[propertyName][lang] = voiceTalking._phrasesToLowerCase(phrases[lang])
+            console.log(voiceTalking[propertyName][lang]);
         }
+    }
+}
+
+voiceTalking._phrasesToLowerCase = function(phrases) {
+    if (typeof phrases === 'string') {
+        return phrases.toLowerCase().trim()
+    } else { //array
+        for (let i = 0; i < phrases.length; i++) {
+            phrases[i] = phrases[i].toLowerCase().trim()
+        }
+        return phrases
     }
 }
 
