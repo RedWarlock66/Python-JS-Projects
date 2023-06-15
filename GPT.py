@@ -5,7 +5,7 @@ import openai
 
 class ConversationAPI:
 
-    _settings_file = settings = Path(__file__).resolve().parent / 'settings/openai_settings.json'
+    _settings_file = Path(__file__).resolve().parent / 'settings/openai_settings.json'
 
     def __init__(self):
         self._settings = self._read_settings()
@@ -44,10 +44,16 @@ class ConversationAPI:
                 "result":{'role':response_message['role'], 'content':response_message['content']}
                 }
 
-    def clear_conversation(self):
+    def clear_conversation(self, messages_to_remove:int = None):
         self._save_conversation()
+        if messages_to_remove is None:
+            self._conversation.clear()
+        else:
+            #the solution doesn't consider all the nuances but it's good enough in most cases
+            removing_index = round(len(self._conversation) * messages_to_remove/ 100)
+            self._conversation = self._conversation[removing_index:]
         self._log_file = self._generate_log_file_name()
-        self._conversation.clear()
+
 
     def _generate_log_file_name(self) -> str:
         return Path(__file__).resolve().parent / f'log/log {datetime.now().strftime("%Y%m%d%H%M%S")}.json'
@@ -69,11 +75,9 @@ class ConversationAPI:
 
     def _cut_converstaion(self, total_tokens:int = None):
         if total_tokens is not None and total_tokens >= self._settings['max_tokens']:
-            #this solution doesn't consider all the nuances but it's good enough in most cases
-            messages_to_remove = round(len(self._conversation) * self._settings['conversation_cut_percentage'] / 100)
-            self._conversation = self._conversation[messages_to_remove:]
-            self._log_file = self._generate_log_file_name()
+            self.clear_conversation(self._settings['conversation_cut_percentage'])
 
     def _save_conversation(self):
-        with open(self._log_file, 'w') as log_file:
-            dump(self._conversation, log_file)
+        if self._conversation:
+            with open(self._log_file, 'w') as log_file:
+                dump(self._conversation, log_file)

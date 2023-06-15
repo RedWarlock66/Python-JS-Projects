@@ -44,6 +44,13 @@ def set_openai_key():
     gpt_api.openai_key = request.get_data(as_text=True)
     return make_response('Ok', 200)
 
+@app.route('/gpt/clear_conversation', methods = ['POST'])
+def clear_conversation():
+    request_text = request.get_data(as_text=True)
+    messages_to_remove = int(request_text) if request_text else None
+    gpt_api.clear_conversation(messages_to_remove)
+    return make_response('Ok', 200)
+
 @app.route('/gpt/conversation_test', methods=['GET'])
 def open_conversation_test():
     return send_file('static/lib/voiceTalking/speech_recognition_test.html')
