@@ -29,6 +29,8 @@
         <div class="voice-status-data">Status:</div>
         <div id="recognition-status" class="voice-status-data">listening</div>
         <button id='show-openai-key' onclick="showHideOpenAIKeySettings()" style="margin-left:5px">Show OpenAI key</button>
+        <button onclick="clearConversation(getMessagesToRemove())" style="margin-left:5px">Cut dialogue</button>
+        <button onclick="clearConversation()" style="margin-left:5px">Clear dialogue</button>
     </div>
     <div class="voice-status-container" id="openai-settings" style="margin-top:3px;display:none">
         <label for="openai-key" style="color:yellow">OpenAI key:</label>
@@ -181,6 +183,27 @@
                     alert(`Unable to change OpenAI key due to ${response.status} error!`);
                 }
             })
+    }
+
+    //should add this to the settings later
+    function getMessagesToRemove() {
+        return 30; //percents, not number
+    }
+
+    function clearConversation(messagesToRemove = null) {
+        if (confirm('Are you sure you want to clear the dialogue?')) {
+           let url = 'gpt/clear_conversation';
+           let settings = {method:'POST', headers:{'Content-Type':'text/plain'}};
+           if (messagesToRemove !== null) settings.body = messagesToRemove;
+           fetch(url, settings)
+            .then(response => {
+                if (response.status === 200) {
+                    location.reload();
+                } else {
+                    alert(`Unable to clear conversation due to ${response.status} error!`);
+                }
+            })
+        }
     }
 
 </script>
