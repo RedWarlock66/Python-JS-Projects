@@ -5,18 +5,18 @@ voiceTalking.parametersSettings = function () {
     let parameters = {};
     parameters.lang = 'en-US';
     parameters.phrases = {};
-    parameters.phrases.startPhrases = {};
-    parameters.phrases.executePhrases = {};
-    parameters.phrases.switchPhrases = {};
-    parameters.phrases.breakPhrases = {};
-    parameters.phrases.responsePhrases = {};
-    parameters.phrases.confirmPhrases = {};
+    parameters.phrases.startPhrases = {'en-US':['ok skynet', 'okay skynet', 'well skynet'], 'ru-RU':'ладно робот'};
+    parameters.phrases.executePhrases = {'en-US':'answer please', 'ru-RU':'скажи пожалуйста'};
+    parameters.phrases.switchPhrases = {'en-US':{'switch to russian':'ru-RU'}, 'ru-RU':{'переключись на английский':'en-US'}};
+    parameters.phrases.breakPhrases = {'en-US':'stop the voice input', 'ru-RU':'отменить голосовой ввод'};
+    parameters.phrases.responsePhrases = {'en-US': 'yes master', 'ru-RU':'слушаю вас'};
+    parameters.phrases.confirmPhrases = {'en-US': 'okay', 'ru-RU': 'хорошо'};
+    parameters.defaultVoices = {'en-US':'US English Female', 'ru-RU':'Russian Female'};
     parameters.elements = {};
     parameters.elements.langTextElement = {};
     parameters.elements.statusTextElement = {};
     parameters.elements.inputElement = {};
     parameters.execMethod = '';
-    parameters.defaultVoices = {};
     parameters.recognitionTestUrl = '';
     return parameters
 }
