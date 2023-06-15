@@ -226,7 +226,7 @@ voiceTalking._ShowHideSettings = function () {
 
 voiceTalking._initializeListening = function () {
     voiceTalking.listener.addEventListener('result', (_event) => {
-        let result = _event.results[_event.results.length - 1][0].transcript.toLowerCase().trim();
+        let result = voiceTalking._formatRecognitionResult(_event.results[_event.results.length - 1][0].transcript);
         console.log('voice listening result: ' + result);
         let switchPhrases = voiceTalking.switchPhrases[voiceTalking.lang]
         if (result in switchPhrases) {
@@ -256,7 +256,7 @@ voiceTalking._startRecognizing = function () {
 
 voiceTalking._initializeRecognizing = function () {
     voiceTalking.recognizer.addEventListener('result', (_event) => {
-        let result = _event.results[_event.results.length - 1][0].transcript.toLowerCase().trim();
+        let result = voiceTalking._formatRecognitionResult(_event.results[_event.results.length - 1][0].transcript);
         console.log('voice recognizing result: ' + result);
         if (voiceTalking._phraseMatches(result, voiceTalking.executePhrases[voiceTalking.lang])) {
             console.log('executing method');
@@ -296,6 +296,12 @@ voiceTalking._phraseMatches = function(inputPhrase, PhrasesToCheck) {
     } else { //array
         return PhrasesToCheck.includes(inputPhrase);
     }
+}
+
+voiceTalking._formatRecognitionResult = function(recognition_result) {
+    formatted_result = recognition_result.toLowerCase().trim();
+    formatted_result = formatted_result.replace(/[^a-zA-Z0-9\s\u0400-\u04FF]/g, "").replace(/\s+/g, " ");
+    return formatted_result
 }
 
 voiceTalking._setPhrases = function (propertyName, phrases) {
