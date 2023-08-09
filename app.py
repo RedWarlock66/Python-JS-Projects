@@ -5,7 +5,7 @@ from pathlib import Path
 from json import load
 import webbrowser, requests, time
 
-app_settings_file, srvr = Path(__file__).resolve().parent / 'settings/app_settings.json', f"http://127.0.0.1"
+app_settings_file = Path(__file__).resolve().parent / 'settings/app_settings.json'
 app, gpt_api = Flask(__name__), None
 #пока что один объект на всех пользователей приложения с одним общим диалогом на всех
 #потом нужно будет или хранить диалог в разрезе пользователей (нагружает сервер), или хранить его на клиенте
@@ -60,7 +60,7 @@ def _read_settings() -> dict:
        app_settings = load(file)
     return app_settings
 
-def _open_ui(port, **kwargs):
+def _open_ui(srvr, port, *args, **kwargs):
     while True:
         time.sleep(1)
         result = requests.get(f'{srvr}:{port}/gpt/ping')
@@ -70,6 +70,7 @@ def _open_ui(port, **kwargs):
 
 if __name__ == "__main__":
     app_settings = _read_settings()
-    ui_thread = Thread(target=_open_ui, kwargs=app_settings)
-    ui_thread.start()
-    app.run(**app_settings)
+    if app_settings['start_automatically']:
+        ui_thread = Thread(target=_open_ui, kwargs=app_settings)
+        ui_thread.start()
+    app.run(port=app_settings['port'], debug=app_settings['debug'])

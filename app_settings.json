@@ -1,0 +1,5 @@
+{ "srvr": "http://127.0.0.1",
+  "port": 4999,
+  "debug": false,
+  "start_automatically": false
+}
