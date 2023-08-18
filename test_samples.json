@@ -1,0 +1,26 @@
+{"send_message":
+[
+  ["What is the color of night?", 1, 9],
+  ["What is the color of night", 4, 9]
+],
+  "send_prompt":
+  [
+        ["Zero-shot inference", "Expectation", "Request", null],
+        ["One-shot inference", "Expectation", "Request", [{"request": "request1", "response": "response1"}]],
+        ["Few-shot inference", "Expectation", "Request", [{"request": "request1", "response": "response1"},
+                                                          {"request": "request2", "response": "response2"}]]
+  ],
+  "send_content_with_overlap":
+[
+  ["Simple", 10, 20, 0, ""],
+  ["Simple", 10, 20, 1, ""],
+  ["Simple", 10, 10, 0, "It is too too too large final instruction that oversizes context window"],
+  ["Simple", 10, 10, 1, "It is too too too large final instruction that oversizes context window"],
+  ["Very very very very redundant content. You do not know how redundant it actually is", 15, 10, 0, ""],
+  ["Very very very very redundant content. You do not know how redundant it actually is", 15, 10, 1, ""],
+  ["Very very very very redundant content. You do not know how redundant it actually is. Very very very very redundant content. You do not know how redundant it actually is", 15, 20, 0, ""],
+  ["Very very very very redundant content. You do not know how redundant it actually is. Very very very very redundant content. You do not know how redundant it actually is", 15, 20, 1, ""],
+  ["Very very very very redundant content. You do not know how redundant it actually is. Very very very very redundant content. You do not know how redundant it actually is", 15, 20, 0, "1. ", true],
+  ["Very very very very redundant content. You do not know how redundant it actually is. Very very very very redundant content. You do not know how redundant it actually is", 15, 20, 1, "1. ", true]
+]
+}
